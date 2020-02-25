@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Websynth</title>
+    <style>
+        .button {
+            padding: 50px;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 15px 5px 0;
+            display:flex;
+            text-align: center;
+        }
+        .container {
+            display: inline-flex;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="button"></div>
+    <div class="button"></div>
+    <div class="button"></div>
+    <div class="button"></div>
+    <div class="button"></div>
+</div>
+<p id="notecount">?</p>
+<div class="container">
+    <div onclick="changeWavetype('sine')" class="button">Sine</div>
+    <div onclick="changeWavetype('square')" class="button">square</div>
+    <div onclick="changeWavetype('sawtooth')" class="button">sawtooth</div>
+    <div onclick="changeWavetype('triangle')" class="button">triangle</div>
+</div>
+<script src="./synth.js"></script>
+</body>
+</html>
