@@ -37,6 +37,17 @@
     <input type="range" min="10" max="3000" id="delay"/>
     <label for="delay">Delay</label>
 </div>
+<div class="container">
+    <input type="range" min="0" max="127" id="masterGain"/>
+    <label for="masterGain">Gain</label>
+</div>
+<div class="container">
+    <input checked name="scale" type="radio" id="scale0"/>
+    <label for="scale1">EQ12</label>
+
+    <input name="scale" type="radio" id="scale1"/>
+    <label for="scale2">Bohlen-Pierce</label>
+</div>
 <script src="./synth.js"></script>
 </body>
 </html>

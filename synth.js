@@ -2,6 +2,8 @@ const container = document.getElementsByClassName('container')[0];
 const buttons = Array.from(document.getElementsByClassName('button'));
 const noteCountText = document.getElementById('notecount');
 const delayRange = document.getElementById('delay');
+const gainRange = document.getElementById('masterGain');
+
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext);
 const oscList = [];
@@ -18,7 +20,7 @@ let osc = null;
 let oscs = {};
 const waveTypes = ['sine', 'square', 'sawtooth', 'triangle'];
 let waveType = 'sine';
-let isDelayOn = true;
+let isDelayOn = false;
 let delayNode = audioContext.createDelay(5);
 
 const effectsNode = [{node: delayNode, on: isDelayOn}];
@@ -80,7 +82,7 @@ function getMIDIMessage(midiMessage) {
 }
 
 
-const createScale = (octaveMultiplier, intervals, tunedTo = 220) => {
+const createScale = (octaveMultiplier, intervals, tunedTo = 110) => {
   let scale = [];
   if (typeof intervals === 'number') {
     for (let i = 0; i <= 88; i++) {
@@ -91,9 +93,12 @@ const createScale = (octaveMultiplier, intervals, tunedTo = 220) => {
   return scale;
 };
 
-const bpScale = createScale(3, 13);
 const eq12Scale = createScale(2, 12);
-let Scale = bpScale;
+const bpScale = createScale(3, 13);
+const customScale = [6.35, 18.35, 20.6, 21.83, 24.5, 27.5, 30.87, 32.7, 36.71, 41.2, 43.65, 49, 55, 61.74, 65.41, 73.42, 82.41, 87.31, 98, 110, 123.47, 130.81, 146.83, 164.81, 174.61, 196, 220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25, 587.33, 659.25, 698.46, 783.99, 880, 987.77, 1046.5, 1174.66, 1318.51, 1396.91, 1567.98, 1760, 1975.53, 2093, 2349.32, 2637.02, 2793.83, 3135.96, 3520, 3951.07, 4186.01, 4698.63, 5274.04, 5587.65, 6271.93, 7040, 7902.13];
+const scales = [eq12Scale, bpScale]
+let Scale = customScale//eq12Scale;
+
 noteOn = (note, velocity) => {
   if (osc) {
     osc.stop();
@@ -127,7 +132,7 @@ noteOn = (note, velocity) => {
   noteCountText.innerHTML = `${note}/${value}`;
 
   newOsc.frequency.value = parseFloat(value);
-  masterGainNode.gain.value = velocity / 150;
+  masterGainNode.gain.value = (velocity / 150)*(gainRange.value/127);
   newOsc.start(0);
 };
 noteOff = (note) => {
@@ -173,3 +178,9 @@ document.addEventListener('keyup', (event) => {
   const keyName = event.key;
   noteOff(keys.indexOf(keyName));
 });
+document.addEventListener('click', function (event) {
+  if ( event.target.name ===( 'scale' ) ) {
+    console.log(event.target.id.slice(-1));
+    Scale = scales[event.target.id.slice(-1)];
+  }
+}, false);
